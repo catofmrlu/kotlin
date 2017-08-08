@@ -28,8 +28,8 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.Call
 import org.jetbrains.kotlin.psi.KtReferenceExpression
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.resolve.DeprecationResolver
 import org.jetbrains.kotlin.resolve.TemporaryBindingTrace
-import org.jetbrains.kotlin.resolve.calls.model.KotlinCallKind
 import org.jetbrains.kotlin.resolve.calls.CallTransformer
 import org.jetbrains.kotlin.resolve.calls.CandidateResolver
 import org.jetbrains.kotlin.resolve.calls.callResolverUtil.isBinaryRemOperator
@@ -38,6 +38,7 @@ import org.jetbrains.kotlin.resolve.calls.callResolverUtil.isInfixCall
 import org.jetbrains.kotlin.resolve.calls.callUtil.createLookupLocation
 import org.jetbrains.kotlin.resolve.calls.context.*
 import org.jetbrains.kotlin.resolve.calls.inference.CoroutineInferenceSupport
+import org.jetbrains.kotlin.resolve.calls.model.KotlinCallKind
 import org.jetbrains.kotlin.resolve.calls.model.MutableResolvedCall
 import org.jetbrains.kotlin.resolve.calls.model.ResolvedCallImpl
 import org.jetbrains.kotlin.resolve.calls.model.VariableAsFunctionResolvedCallImpl
@@ -48,7 +49,6 @@ import org.jetbrains.kotlin.resolve.calls.smartcasts.DataFlowInfo
 import org.jetbrains.kotlin.resolve.calls.smartcasts.DataFlowValueFactory
 import org.jetbrains.kotlin.resolve.calls.tasks.*
 import org.jetbrains.kotlin.resolve.descriptorUtil.hasDynamicExtensionAnnotation
-import org.jetbrains.kotlin.resolve.isHiddenInResolution
 import org.jetbrains.kotlin.resolve.scopes.LexicalScope
 import org.jetbrains.kotlin.resolve.scopes.MemberScope
 import org.jetbrains.kotlin.resolve.scopes.SyntheticScopes
@@ -69,7 +69,8 @@ class NewResolutionOldInference(
         private val dynamicCallableDescriptors: DynamicCallableDescriptors,
         private val syntheticScopes: SyntheticScopes,
         private val languageVersionSettings: LanguageVersionSettings,
-        private val coroutineInferenceSupport: CoroutineInferenceSupport
+        private val coroutineInferenceSupport: CoroutineInferenceSupport,
+        private val deprecationResolver: DeprecationResolver
 ) {
     sealed class ResolutionKind<D : CallableDescriptor>(val kotlinCallKind: KotlinCallKind = KotlinCallKind.UNSUPPORTED) {
         abstract internal fun createTowerProcessor(
@@ -203,7 +204,7 @@ class NewResolutionOldInference(
             val candidateTrace = TemporaryBindingTrace.create(basicCallContext.trace, "Context for resolve candidate")
             val resolvedCall = ResolvedCallImpl.create(candidate, candidateTrace, tracing, basicCallContext.dataFlowInfoForArguments)
 
-            if (candidate.descriptor.isHiddenInResolution(languageVersionSettings, basicCallContext.isSuperCall)) {
+            if (deprecationResolver.isHiddenInResolution(candidate.descriptor, basicCallContext.isSuperCall)) {
                 return@map MyCandidate(ResolutionCandidateStatus(listOf(HiddenDescriptor)), resolvedCall)
             }
 
@@ -362,7 +363,8 @@ class NewResolutionOldInference(
                 }
             }
 
-            if (towerCandidate.descriptor.isHiddenInResolution(languageVersionSettings, basicCallContext.isSuperCall)) {
+
+            if (deprecationResolver.isHiddenInResolution(towerCandidate.descriptor, basicCallContext.isSuperCall)) {
                 return MyCandidate(ResolutionCandidateStatus(listOf(HiddenDescriptor)), candidateCall)
             }
 

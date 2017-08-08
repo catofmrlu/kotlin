@@ -33,8 +33,8 @@ import org.jetbrains.kotlin.load.java.sam.SamAdapterDescriptor
 import org.jetbrains.kotlin.load.java.sam.SamConstructorDescriptor
 import org.jetbrains.kotlin.load.java.sam.SingleAbstractMethodUtils
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.resolve.DeprecationResolver
 import org.jetbrains.kotlin.resolve.calls.inference.wrapWithCapturingSubstitution
-import org.jetbrains.kotlin.resolve.isHiddenInResolution
 import org.jetbrains.kotlin.resolve.scopes.DescriptorKindFilter
 import org.jetbrains.kotlin.resolve.scopes.ResolutionScope
 import org.jetbrains.kotlin.resolve.scopes.SyntheticScope
@@ -49,7 +49,8 @@ interface SamAdapterExtensionFunctionDescriptor : FunctionDescriptor, SyntheticM
 
 class SamAdapterFunctionsScope(
         storageManager: StorageManager,
-        private val languageVersionSettings: LanguageVersionSettings
+        private val languageVersionSettings: LanguageVersionSettings,
+        private val deprecationResolver: DeprecationResolver
 ) : SyntheticScope {
     private val extensionForFunction = storageManager.createMemoizedFunctionWithNullableValues<FunctionDescriptor, FunctionDescriptor> { function ->
         extensionForFunctionNotCached(function)
@@ -81,7 +82,7 @@ class SamAdapterFunctionsScope(
         if (!function.hasJavaOriginInHierarchy()) return null //TODO: should we go into base at all?
         if (!SingleAbstractMethodUtils.isSamAdapterNecessary(function)) return null
         if (function.returnType == null) return null
-        if (function.isHiddenInResolution(languageVersionSettings)) return null
+        if (deprecationResolver.isHiddenInResolution(function)) return null
         return MyFunctionDescriptor.create(function)
     }
 

@@ -16,10 +16,10 @@
 
 package org.jetbrains.kotlin.resolve.calls.tower
 
-import org.jetbrains.kotlin.config.LanguageVersionSettings
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.psi.KtSuperExpression
+import org.jetbrains.kotlin.resolve.DeprecationResolver
 import org.jetbrains.kotlin.resolve.DescriptorToSourceUtils
 import org.jetbrains.kotlin.resolve.calls.callResolverUtil.isConventionCall
 import org.jetbrains.kotlin.resolve.calls.callResolverUtil.isInfixCall
@@ -27,10 +27,9 @@ import org.jetbrains.kotlin.resolve.calls.callResolverUtil.isSuperOrDelegatingCo
 import org.jetbrains.kotlin.resolve.calls.components.KotlinResolutionExternalPredicates
 import org.jetbrains.kotlin.resolve.calls.model.KotlinCall
 import org.jetbrains.kotlin.resolve.calls.model.SimpleKotlinCallArgument
-import org.jetbrains.kotlin.resolve.isHiddenInResolution
 
 class KotlinResolutionExternalPredicatesImpl(
-        private val languageVersionSettings: LanguageVersionSettings
+        private val deprecationResolver: DeprecationResolver
 ) : KotlinResolutionExternalPredicates {
     override fun isDescriptorFromSource(descriptor: CallableDescriptor) =
             DescriptorToSourceUtils.descriptorToDeclaration(descriptor) != null
@@ -46,7 +45,7 @@ class KotlinResolutionExternalPredicatesImpl(
             kotlinCall is PSIKotlinCallImpl && isSuperOrDelegatingConstructorCall(kotlinCall.psiCall)
 
     override fun isHiddenInResolution(descriptor: DeclarationDescriptor, kotlinCall: KotlinCall) =
-            descriptor.isHiddenInResolution(languageVersionSettings, isSuperOrDelegatingConstructorCall(kotlinCall))
+            deprecationResolver.isHiddenInResolution(descriptor, isSuperOrDelegatingConstructorCall(kotlinCall))
 
     override fun isSuperExpression(receiver: SimpleKotlinCallArgument?): Boolean =
             receiver?.psiExpression is KtSuperExpression
