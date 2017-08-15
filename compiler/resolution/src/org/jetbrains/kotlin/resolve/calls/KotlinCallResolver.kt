@@ -53,7 +53,7 @@ class KotlinCallResolver(
             KotlinCallKind.UNSUPPORTED -> throw UnsupportedOperationException()
         }
 
-        val candidates = towerResolver.runResolve(scopeTower, processor, useOrder = kotlinCall.callKind != KotlinCallKind.UNSUPPORTED)
+        val candidates = towerResolver.runResolve(scopeTower, processor, useOrder = kotlinCall.callKind != KotlinCallKind.UNSUPPORTED, name = kotlinCall.name)
 
         return choseMostSpecific(callContext, expectedType, candidates)
     }

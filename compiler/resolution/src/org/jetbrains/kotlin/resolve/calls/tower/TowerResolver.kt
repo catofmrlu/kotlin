@@ -16,12 +16,15 @@
 
 package org.jetbrains.kotlin.resolve.calls.tower
 
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.progress.ProgressIndicatorAndCompilationCanceledStatus
 import org.jetbrains.kotlin.resolve.calls.tasks.ExplicitReceiverKind
 import org.jetbrains.kotlin.resolve.scopes.ImportingScope
 import org.jetbrains.kotlin.resolve.scopes.LexicalScope
+import org.jetbrains.kotlin.resolve.scopes.ResolutionScope
 import org.jetbrains.kotlin.resolve.scopes.receivers.ReceiverValueWithSmartCastInfo
 import org.jetbrains.kotlin.resolve.scopes.utils.parentsWithSelf
+import org.jetbrains.kotlin.util.OperatorNameConventions
 import java.util.*
 
 interface Candidate {
@@ -74,14 +77,16 @@ class TowerResolver {
     fun <C: Candidate> runResolve(
             scopeTower: ImplicitScopeTower,
             processor: ScopeTowerProcessor<C>,
-            useOrder: Boolean
-    ): Collection<C> = scopeTower.run(processor, SuccessfulResultCollector { it.status }, useOrder)
+            useOrder: Boolean,
+            name: Name
+    ): Collection<C> = scopeTower.run(processor, SuccessfulResultCollector { it.status }, useOrder, name)
 
     fun <C: Candidate> collectAllCandidates(
             scopeTower: ImplicitScopeTower,
-            processor: ScopeTowerProcessor<C>
+            processor: ScopeTowerProcessor<C>,
+            name: Name
     ): Collection<C>
-            = scopeTower.run(processor, AllCandidatesCollector { it.status }, false)
+            = scopeTower.run(processor, AllCandidatesCollector { it.status }, false, name)
 
     private fun ImplicitScopeTower.createNonLocalLevels(): List<ScopeTowerLevel> {
         val result = ArrayList<ScopeTowerLevel>()
@@ -103,13 +108,10 @@ class TowerResolver {
     private fun <C> ImplicitScopeTower.run(
             processor: ScopeTowerProcessor<C>,
             resultCollector: ResultCollector<C>,
-            useOrder: Boolean
+            useOrder: Boolean,
+            name: Name
     ): Collection<C> {
         fun TowerData.process() = processTowerData(processor, resultCollector, useOrder, this)
-
-        val localLevels = lexicalScope.parentsWithSelf.
-                filterIsInstance<LexicalScope>().filter { it.kind.withLocalDescriptors }.
-                map { ScopeBasedTowerLevel(this@run, it) }
 
         // Lazy calculation
         var nonLocalLevels: Collection<ScopeTowerLevel>? = null
@@ -122,6 +124,11 @@ class TowerResolver {
         TowerData.Empty.process()?.let { return it }
         // synthetic property for explicit receiver
         TowerData.TowerLevel(syntheticLevel).process()?.let { return it }
+
+        val localLevels =
+                lexicalScope.parentsWithSelf.
+                        filterIsInstance<LexicalScope>().filter { it.kind.withLocalDescriptors && it.mayFitForName(name) }.
+                        map { ScopeBasedTowerLevel(this@run, it) }.toList()
 
         // local non-extensions or extension for explicit receiver
         for (localLevel in localLevels) {
@@ -172,6 +179,9 @@ class TowerResolver {
 
         return resultCollector.getFinalCandidates()
     }
+
+    private fun ResolutionScope.mayFitForName(name: Name) =
+            !definitelyDoesNotContainName(name) || !definitelyDoesNotContainName(OperatorNameConventions.INVOKE)
 
     fun <C> runWithEmptyTowerData(
             processor: ScopeTowerProcessor<C>,

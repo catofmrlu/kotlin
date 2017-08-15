@@ -98,7 +98,7 @@ class CallableReferenceResolver(
     ): Set<CallableReferenceCandidate> {
         val factory = CallableReferencesCandidateFactory(callableReference, outerCallContext, compatibilityChecker, expectedType)
         val processor = createCallableReferenceProcessor(factory)
-        val candidates = towerResolver.runResolve(outerCallContext.scopeTower, processor, useOrder = true)
+        val candidates = towerResolver.runResolve(outerCallContext.scopeTower, processor, useOrder = true, name = callableReference.rhsName)
         return callableReferenceOverloadConflictResolver.chooseMaximallySpecificCandidates(candidates, CheckArgumentTypesMode.CHECK_VALUE_ARGUMENTS,
                                                                    discriminateGenerics = false,
                                                                    isDebuggerContext = outerCallContext.scopeTower.isDebuggerContext)
