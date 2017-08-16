@@ -20266,6 +20266,60 @@ public class DiagnosticsUsingJavacTestGenerated extends AbstractDiagnosticsUsing
                 doTest(fileName);
             }
 
+            @TestMetadata("compiler/testData/diagnostics/tests/smartCasts/castchecks")
+            @TestDataPath("$PROJECT_ROOT")
+            @RunWith(JUnit3RunnerWithInners.class)
+            public static class Castchecks extends AbstractDiagnosticsUsingJavacTest {
+                public void testAllFilesPresentInCastchecks() throws Exception {
+                    KotlinTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/diagnostics/tests/smartCasts/castchecks"), Pattern.compile("^(.+)\\.kt$"), TargetBackend.ANY, true);
+                }
+
+                @TestMetadata("basicOff.kt")
+                public void testBasicOff() throws Exception {
+                    String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/smartCasts/castchecks/basicOff.kt");
+                    doTest(fileName);
+                }
+
+                @TestMetadata("basicOn.kt")
+                public void testBasicOn() throws Exception {
+                    String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/smartCasts/castchecks/basicOn.kt");
+                    doTest(fileName);
+                }
+
+                @TestMetadata("insideCall.kt")
+                public void testInsideCall() throws Exception {
+                    String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/smartCasts/castchecks/insideCall.kt");
+                    doTest(fileName);
+                }
+
+                @TestMetadata("variables.kt")
+                public void testVariables() throws Exception {
+                    String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/smartCasts/castchecks/variables.kt");
+                    doTest(fileName);
+                }
+            }
+
+            @TestMetadata("compiler/testData/diagnostics/tests/smartCasts/elvis")
+            @TestDataPath("$PROJECT_ROOT")
+            @RunWith(JUnit3RunnerWithInners.class)
+            public static class Elvis extends AbstractDiagnosticsUsingJavacTest {
+                public void testAllFilesPresentInElvis() throws Exception {
+                    KotlinTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/diagnostics/tests/smartCasts/elvis"), Pattern.compile("^(.+)\\.kt$"), TargetBackend.ANY, true);
+                }
+
+                @TestMetadata("basicOff.kt")
+                public void testBasicOff() throws Exception {
+                    String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/smartCasts/elvis/basicOff.kt");
+                    doTest(fileName);
+                }
+
+                @TestMetadata("basicOn.kt")
+                public void testBasicOn() throws Exception {
+                    String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/smartCasts/elvis/basicOn.kt");
+                    doTest(fileName);
+                }
+            }
+
             @TestMetadata("compiler/testData/diagnostics/tests/smartCasts/inference")
             @TestDataPath("$PROJECT_ROOT")
             @RunWith(JUnit3RunnerWithInners.class)
@@ -21252,6 +21306,18 @@ public class DiagnosticsUsingJavacTestGenerated extends AbstractDiagnosticsUsing
                 @TestMetadata("boundInitializerWrong.kt")
                 public void testBoundInitializerWrong() throws Exception {
                     String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/smartCasts/varnotnull/boundInitializerWrong.kt");
+                    doTest(fileName);
+                }
+
+                @TestMetadata("capturedInClosureModifiedBefore.kt")
+                public void testCapturedInClosureModifiedBefore() throws Exception {
+                    String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/smartCasts/varnotnull/capturedInClosureModifiedBefore.kt");
+                    doTest(fileName);
+                }
+
+                @TestMetadata("capturedInClosureOff.kt")
+                public void testCapturedInClosureOff() throws Exception {
+                    String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/smartCasts/varnotnull/capturedInClosureOff.kt");
                     doTest(fileName);
                 }
 
