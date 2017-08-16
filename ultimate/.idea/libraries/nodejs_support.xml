@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="nodejs-support">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/ideaSDK/config-idea/plugins/NodeJS/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/ideaSDK/config-idea/plugins/NodeJS/lib" recursive="false" />
+  </library>
+</component>
