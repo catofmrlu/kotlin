@@ -18,9 +18,9 @@ import bar.*
         /*c:foo.A*/foo()
         /*p:foo(A) p:kotlin(Int)*/this./*c:foo.A*/a
         /*p:foo(A)*/this./*c:foo.A*/foo()
-        /*c:foo.A c:foo.A(getBaz) c:foo.A(getBAZ) c:foo.A.Companion p:foo p:bar p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm*/baz()
-        /*c:foo.A c:foo.A.Companion p:foo p:bar p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm p:kotlin(Int)*/Companion./*c:foo.A.Companion*/a
-        /*c:foo.A c:foo.A.Companion p:foo p:bar p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm p:kotlin(String)*/O./*c:foo.A.O*/v = /*p:kotlin(String)*/"OK"
+        /*c:foo.A c:foo.A(getBaz) c:foo.A(getBAZ) c:foo.A.Companion p:foo p:foo(invoke) p:bar p:bar(invoke) p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm p:kotlin(invoke) p:kotlin.annotation(invoke) p:kotlin.collections(invoke) p:kotlin.ranges(invoke) p:kotlin.sequences(invoke) p:kotlin.text(invoke) p:kotlin.io(invoke) p:kotlin.comparisons(invoke) p:java.lang(invoke) p:kotlin.jvm(invoke)*/baz()
+        /*c:foo.A c:foo.A.Companion p:foo p:foo(invoke) p:bar p:bar(invoke) p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm p:kotlin(invoke) p:kotlin.annotation(invoke) p:kotlin.collections(invoke) p:kotlin.ranges(invoke) p:kotlin.sequences(invoke) p:kotlin.text(invoke) p:kotlin.io(invoke) p:kotlin.comparisons(invoke) p:java.lang(invoke) p:kotlin.jvm(invoke) p:kotlin(Int)*/Companion./*c:foo.A.Companion*/a
+        /*c:foo.A c:foo.A.Companion p:foo p:foo(invoke) p:bar p:bar(invoke) p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm p:kotlin(invoke) p:kotlin.annotation(invoke) p:kotlin.collections(invoke) p:kotlin.ranges(invoke) p:kotlin.sequences(invoke) p:kotlin.text(invoke) p:kotlin.io(invoke) p:kotlin.comparisons(invoke) p:java.lang(invoke) p:kotlin.jvm(invoke) p:kotlin(String)*/O./*c:foo.A.O*/v = /*p:kotlin(String)*/"OK"
     }
 
     class B {
@@ -64,8 +64,8 @@ import bar.*
     val a = /*p:kotlin(Int)*/1
     fun foo() {
         /*c:foo.E p:kotlin(Int)*/a
-        /*c:foo.E p:foo p:bar p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm p:kotlin(Int)*/Y./*c:foo.E*/a
+        /*c:foo.E p:foo p:foo(invoke) p:bar p:bar(invoke) p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm p:kotlin(invoke) p:kotlin.annotation(invoke) p:kotlin.collections(invoke) p:kotlin.ranges(invoke) p:kotlin.sequences(invoke) p:kotlin.text(invoke) p:kotlin.io(invoke) p:kotlin.comparisons(invoke) p:java.lang(invoke) p:kotlin.jvm(invoke) p:kotlin(Int)*/Y./*c:foo.E*/a
         /*c:foo.E*/foo()
-        /*c:foo.E p:foo p:bar p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm*/X./*c:foo.E*/foo()
+        /*c:foo.E p:foo p:foo(invoke) p:bar p:bar(invoke) p:kotlin p:kotlin.annotation p:kotlin.collections p:kotlin.ranges p:kotlin.sequences p:kotlin.text p:kotlin.io p:kotlin.comparisons p:java.lang p:kotlin.jvm p:kotlin(invoke) p:kotlin.annotation(invoke) p:kotlin.collections(invoke) p:kotlin.ranges(invoke) p:kotlin.sequences(invoke) p:kotlin.text(invoke) p:kotlin.io(invoke) p:kotlin.comparisons(invoke) p:java.lang(invoke) p:kotlin.jvm(invoke)*/X./*c:foo.E*/foo()
     }
 }
